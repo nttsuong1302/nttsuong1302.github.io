@@ -1,3 +1,8 @@
+---
+layout: page
+title: "Install Postgresql on Docker"
+permalink: /installpostgreondocker
+---
 Install_Docker_Postgre.md
 
 # DOCKER
