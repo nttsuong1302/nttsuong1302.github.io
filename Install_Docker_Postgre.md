@@ -5,6 +5,10 @@ permalink: /installpostgreondocker
 ---
 Install_Docker_Postgre.md
 
+# Redhat
+Register https://www.redhat.com/wapps/ugc/register.html
+
+
 # DOCKER
 
 ## Redhat registry
@@ -17,20 +21,39 @@ docker pull registry.access.redhat.com/rhel7:7.9-810.1665060344 --platform linux
 docker volume create postgresql-vol
 
 ## Docker run command
-docker run --name postgres --privileged -v `pwd`:/usr/local -w `pwd` -it roboxes/rhel8 
+docker run --name postgres --privileged -v `pwd`:/usr/product -w `pwd` -it 999a4bdb456e
+docker run --name postgresRoboxes --privileged -v `pwd`:/usr/product -w `pwd` -it ee31eedcb74d
+docker run --name postgresRocky --privileged -v `pwd`:/usr/product -w `pwd` -it 523ffac7fb2e
 
 ### Docker list images
 docker images
 
+### Docker remove images
 docker rmi ee31eedcb74d -f
-
-
 
 # Postgresql
 
-sudo dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-sudo dnf -qy module disable postgresql
-sudo dnf install -y postgresql15-server
-sudo /usr/pgsql-15/bin/postgresql-15-setup initdb
-sudo systemctl enable postgresql-15
-sudo systemctl start postgresql-15
+## Install with image rhel 8 and the postgresql tar : Failed 
+groupadd dba
+useradd -g dba postgres -m -d /usr/product/pgsql
+usermod -aG wheel postgres
+
+subscription-manager register
+subscription-manager register --username  --password  --auto-attach
+
+tar xvfj postgresql-<version>.tar.bz2 $ 
+cd postgresql-<version> $ 
+./configure $ 
+make 
+make install
+
+./configure -prefix=/usr/product/pgsql --with-pgport=12000
+
+### Error 
+configure:3966: error: in `/usr/product/postgres/distrib/postgresql-15.0':
+configure:3968: error: no acceptable C compiler found in $PATH
+
+ /usr/include/bits/local_lim.h:38:10: fatal error: linux/limits.h: No such file or directory
+ #include <linux/limits.h>
+
+yum install gcc-c++
